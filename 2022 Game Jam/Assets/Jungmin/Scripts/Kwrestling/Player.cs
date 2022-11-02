@@ -12,7 +12,7 @@ namespace Kwrestling
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                kwrestling.SetGaugeValue(1);
+                kwrestling.ChangeGaugeValue(1);
             }
         }
     }

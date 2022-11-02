@@ -15,7 +15,7 @@ namespace Kwrestling
 
         private float RandDelay()
         {
-            return Random.Range(0.08f, 0.1f);
+            return Random.Range(0.1f, 0.15f);
         }
 
         private IEnumerator AISystem()
@@ -23,7 +23,7 @@ namespace Kwrestling
             while (!kwrestling.GameOver)
             {
                 yield return new WaitForSeconds(RandDelay());
-                kwrestling.SetGaugeValue(-1);
+                kwrestling.ChangeGaugeValue(-1);
             }
         }
     }
