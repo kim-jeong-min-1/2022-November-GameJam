@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dak_ge : MonoBehaviour
+public class Attack_Mark : MonoBehaviour
 {
     public List<Sprite> sprite = new List<Sprite>();
 
@@ -13,23 +13,13 @@ public class Dak_ge : MonoBehaviour
         Ren = GetComponent<SpriteRenderer>();
     }
 
-    public void Ai_Idle()
+    public void Attack()
     {
         Ren.sprite = sprite[0];
     }
 
-    public void Ai_Win()
+    public void Defense()
     {
         Ren.sprite = sprite[1];
-    }
-
-    public void Player_Idle()
-    {
-        Ren.sprite = sprite[2];
-    }
-
-    public void Player_Win()
-    {
-        Ren.sprite = sprite[3];
     }
 }

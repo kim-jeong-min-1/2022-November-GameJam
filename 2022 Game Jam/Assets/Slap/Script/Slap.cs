@@ -8,8 +8,12 @@ public class Slap : MonoBehaviour
 
     [SerializeField] private Player player;
     [SerializeField] private Ai ai;
+    [SerializeField] private Dak_ge dak_ge;
+    [SerializeField] private Attack_Mark mark;
+    [SerializeField] private BackGround backGround;
 
     public Slider Slider;
+    public GameObject Effect;
 
     float Speed; // 핸들 속도
     public bool isStop = false; // 스페이스바 = 멈춤
@@ -17,10 +21,14 @@ public class Slap : MonoBehaviour
     public bool isAttack = false; // 내 공격 = true
     bool isWait; // 공격 끝나고 대기
     bool Ending;
+    bool win;
 
     private void Start()
     {
         ai.Attack_Wait();
+        dak_ge.Ai_Idle();
+        mark.Defense();
+        backGround.Idle();
     }
 
     private void Update()
@@ -76,19 +84,29 @@ public class Slap : MonoBehaviour
         {
             player.Win();
             ai.Lose();
+            dak_ge.Player_Win();
+            Effect.transform.position = new Vector2(1.89f, 4.93f);
         }
         else if (-0.54f <= Slider.value && Slider.value <= 0.54f)
         {
             player.Win();
             ai.Lose();
+            dak_ge.Player_Win();
+            win = true;
         }
         else
         {
             ai.Win();
             player.Lose();
+            dak_ge.Ai_Win();
+            win = true;
 
             // 게임오버
         }
+
+        if (isAttack && win)
+            backGround.Win();
+
         if(isAttack)
             Ending = true;
 
@@ -102,5 +120,7 @@ public class Slap : MonoBehaviour
 
         ai.Idle();
         player.Attack_Wait();
+        dak_ge.Player_Idle();
+        mark.Attack();
     }
 }
