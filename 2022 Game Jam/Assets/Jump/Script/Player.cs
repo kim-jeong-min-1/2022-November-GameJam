@@ -16,11 +16,6 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
-
-    private void Update()
-    {
-        
-    }
     
     public void Jump()
     {

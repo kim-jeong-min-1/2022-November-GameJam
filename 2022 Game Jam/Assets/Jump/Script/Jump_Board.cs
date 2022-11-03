@@ -8,11 +8,27 @@ public class Jump_Board : MonoBehaviour
 
     Player Player;
 
+    
+
     public bool isOver = false;
+    public bool ClickTime = false; 
+    public bool ClickCheck = false;
+    public bool isClick = true;
+    public bool isSucces = true;
 
     private void Update()
     {
+        if (ClickTime == true)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ClickCheck = true;
+                isClick = true;
+                //Player.Jump();
+            }
+        }
         Move();
+        
     }
 
     void Move()
@@ -23,6 +39,11 @@ public class Jump_Board : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if(collision.name == "Click_Check")
+        {
+            ClickTime = true;
+            ClickCheck = false;
+        }
         if(collision.name == "Over_Check")
         {
             if (isOver == true) isOver = false;
@@ -30,13 +51,23 @@ public class Jump_Board : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.name == "Click_Check")
+        if (collision.name == "Click_Check")
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            ClickTime = false;
+            if (ClickCheck == false)
             {
-                Player.Jump();
+                isClick = false;
+            }
+
+            if (isClick) isSucces = true;
+            else isSucces = false;
+
+            if (isSucces != true)
+            {
+                Debug.Log("1111");
+                //게임 오버
             }
         }
     }
