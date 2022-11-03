@@ -9,12 +9,13 @@ namespace Kwrestling
     public class Kwrestling : MonoBehaviour
     {
         private readonly int CombineValue = 1;
-        private readonly Color PlayerColor = new Color(255 / 255f, 55/ 255f, 150 / 255f, 1);
-        private readonly Color EnemyColor = new Color(65 / 255f, 60 / 255f, 215 / 255f, 1);
+        private readonly Color PlayerColor = new Color(65 / 255f, 60 / 255f, 215 / 255f, 1);
+        private readonly Color EnemyColor = new Color(255 / 255f, 55 / 255f, 150 / 255f, 1);
 
         [SerializeField] private List<SpriteRenderer> gauges = new List<SpriteRenderer>();
         [SerializeField] private GameObject ClickUI => transform.GetChild(0).gameObject;
-        [SerializeField] private GameObject KO => transform.GetChild(1).gameObject;
+        [SerializeField] private GameObject KoUI => transform.GetChild(1).gameObject;
+        [SerializeField] private Sprite koSprite;
 
         public bool GameOver;
         private string Winner;
@@ -57,13 +58,18 @@ namespace Kwrestling
         private void ClickUISetUp()
         {
             ClickUI.transform.localScale = Vector3.one * 0.8f;
+
+            float PosY = Random.Range(-3, 4);
+            float PosX = Random.Range(-1.5f, 3.5f);
+            ClickUI.transform.position = new Vector2(PosX, PosY);
+
             ClickUI.SetActive(false);
         }
 
         private void GameOverUI()
         {
-            KO.SetActive(true);
-            KO.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutQuad);
+            KoUI.SetActive(true);
+            KoUI.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutQuad);
         }
 
         // Update is called once per frame
@@ -73,6 +79,8 @@ namespace Kwrestling
             {
                 GameOver = true;
                 Winner = "Player";
+
+                GetComponent<SpriteRenderer>().sprite = koSprite;
             }
             else if (Gauge <= 0)
             {

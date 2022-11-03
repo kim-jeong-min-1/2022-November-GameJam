@@ -14,26 +14,28 @@ namespace GangGangSulae
     public class Player : MonoBehaviour
     {
         private SpriteRenderer spriteRenderer => GetComponent<SpriteRenderer>();
+        private Animator animator => GetComponent<Animator>();
         [HideInInspector] public PlayerState playerState = PlayerState.Stop;
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                StartCoroutine(Dance(Color.yellow));
+                StartCoroutine(Dance(false));
                 playerState = PlayerState.Left;
             }
             else if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                StartCoroutine(Dance(Color.red));
+                StartCoroutine(Dance(true));
                 playerState = PlayerState.Right;
             }
         }
 
-        private IEnumerator Dance(Color dirColor)
+        private IEnumerator Dance(bool flip)
         {
-            spriteRenderer.color = dirColor;
-            yield return new WaitForSeconds(0.5f);
-            spriteRenderer.color = Color.white;
+            spriteRenderer.flipX = flip;
+            animator.SetTrigger("isMove");
+
+            yield return new WaitForSeconds(0.3f);
             playerState = PlayerState.Stop;
         }
     }

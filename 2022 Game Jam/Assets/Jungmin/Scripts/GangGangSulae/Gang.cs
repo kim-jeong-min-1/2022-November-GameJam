@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public enum WaitTime
 {
@@ -23,8 +24,9 @@ namespace GangGangSulae
         private readonly float ExactBeat = 2f;
         private readonly float OffBeat = 1.2f;
         private readonly float FasetBeat = 0.8f;
-      
+
         [SerializeField] private List<SpriteRenderer> aiSprites = new List<SpriteRenderer>();
+        [SerializeField] private List<Animator> aiAnimators = new List<Animator>();
         [SerializeField] private Player player;
         private bool GameOver = false;
 
@@ -53,22 +55,42 @@ namespace GangGangSulae
 
         private void ChangeSprite(GangGangSulaeState state)
         {
-            Color color = state switch
+            bool flip = state switch
             {
-                GangGangSulaeState.Left => Color.yellow,
-                GangGangSulaeState.Right => Color.red,
-                GangGangSulaeState.Stop => Color.white
+                GangGangSulaeState.Left => false,
+                GangGangSulaeState.Right => true,
+            };
+
+            int dir = state switch
+            {
+                GangGangSulaeState.Left => -1,
+                GangGangSulaeState.Right => 1,
             };
 
             for (int i = 0; i < aiSprites.Count; i++)
             {
-                aiSprites[i].color = color;
+                if (state == GangGangSulaeState.Stop) continue;
+                aiSprites[i].flipX = flip;
+
+                var ai = aiSprites[i].gameObject.transform;
+                ai.DOMoveX(ai.position.x + (1f * dir), 0.2f).SetEase(Ease.Linear);
+                aiSprites[i].GetComponent<Animator>().SetTrigger("isMove");
             }
+            player.gameObject.transform.
+                DOMoveX(player.gameObject.transform.position.x + (1f * dir), 0.2f).SetEase(Ease.Linear);
+
+            StartCoroutine(CameraMove(dir));
+        }
+
+        private IEnumerator CameraMove(int dir)
+        {
+            yield return new WaitForSeconds(0.1f);
+            Camera.main.transform.DOMoveX(Camera.main.transform.position.x + (1.2f * dir), 0.2f).SetEase(Ease.Linear);
         }
 
         private void GameOverCheck()
         {
-            if((int)player.playerState != (int)state)
+            if ((int)player.playerState != (int)state)
             {
                 GameOver = true;
             }
@@ -76,17 +98,19 @@ namespace GangGangSulae
 
         private IEnumerator GangGangSulaeLogic()
         {
-            while (!GameOver)
-            {
-                state = GangGangSulaeState.Stop;
-                ChangeSprite(state);
-                yield return new WaitForSeconds(RandWaitTime());
+            if (!GameOver) StopAllCoroutines();
 
-                state = (GangGangSulaeState)Random.Range(1, 3);
-                ChangeSprite(state);
-                yield return new WaitForSeconds(0.5f);
-                GameOverCheck();
-            }
+            state = GangGangSulaeState.Stop;
+            yield return new WaitForSeconds(RandWaitTime());
+
+            state = (GangGangSulaeState)Random.Range(1, 3);
+            ChangeSprite(state);
+
+            yield return new WaitForSeconds(0.3f);
+            StartCoroutine(GangGangSulaeLogic());
+            yield return new WaitForSeconds(0.2f);
+            GameOverCheck();
+
         }
     }
 }
