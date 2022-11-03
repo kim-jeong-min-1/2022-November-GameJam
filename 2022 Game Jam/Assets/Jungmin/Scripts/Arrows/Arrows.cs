@@ -14,6 +14,7 @@ public class Arrows : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.isWait) return;
         ArrowToMousePoint();
 
         if (Input.GetMouseButtonDown(0))

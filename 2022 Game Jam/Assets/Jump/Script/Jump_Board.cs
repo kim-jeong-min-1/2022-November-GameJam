@@ -5,10 +5,7 @@ using DG.Tweening;
 
 public class Jump_Board : MonoBehaviour
 {
-
     Player Player;
-
-    
 
     public bool isOver = false;
     public bool ClickTime = false; 
@@ -28,7 +25,6 @@ public class Jump_Board : MonoBehaviour
             }
         }
         Move();
-        
     }
 
     void Move()
@@ -67,7 +63,7 @@ public class Jump_Board : MonoBehaviour
             if (isSucces != true)
             {
                 Debug.Log("1111");
-                //게임 오버
+                GameManager.Instance.GameOver(true);
             }
         }
     }

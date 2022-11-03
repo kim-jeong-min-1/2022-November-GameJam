@@ -23,6 +23,7 @@ public class ArrowsLogic : MonoBehaviour
         if(hitTarget == 5)
         {
             GameClear = true;
+            GameManager.Instance.GameClear(GameClear);
         }
     }
 
@@ -46,6 +47,7 @@ public class ArrowsLogic : MonoBehaviour
 
     private IEnumerator TargetMoving(GameObject target, int direction, float speed)
     {
+        yield return new WaitUntil(() => !GameManager.Instance.isWait);
         while(hitTarget != 4)
         {
             if (Mathf.Abs(target.transform.position.x) >= MaxXAbs) direction = -direction;

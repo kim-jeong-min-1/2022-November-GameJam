@@ -10,7 +10,7 @@ namespace Kwrestling
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && !GameManager.Instance.isWait)
             {
                 kwrestling.ChangeGaugeValue(1);
             }

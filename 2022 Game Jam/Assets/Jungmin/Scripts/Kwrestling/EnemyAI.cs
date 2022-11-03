@@ -20,6 +20,7 @@ namespace Kwrestling
 
         private IEnumerator AISystem()
         {
+            yield return new WaitUntil(() => !GameManager.Instance.isWait);
             while (!kwrestling.GameOver)
             {
                 yield return new WaitForSeconds(RandDelay());

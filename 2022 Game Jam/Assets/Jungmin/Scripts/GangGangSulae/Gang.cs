@@ -93,11 +93,13 @@ namespace GangGangSulae
             if ((int)player.playerState != (int)state)
             {
                 GameOver = true;
+                GameManager.Instance.GameOver(GameOver);
             }
         }
 
         private IEnumerator GangGangSulaeLogic()
         {
+            yield return new WaitUntil(() => !GameManager.Instance.isWait);
             while (!GameOver)
             {
                 state = GangGangSulaeState.Stop;

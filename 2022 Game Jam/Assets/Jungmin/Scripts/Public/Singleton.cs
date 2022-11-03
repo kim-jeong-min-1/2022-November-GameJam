@@ -9,19 +9,28 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         get
         {
-            instance = FindObjectOfType<T>();
-
-            if(instance == null)
+            if (instance == null)
             {
-                instance = new GameObject(typeof(T).Name).AddComponent<T>();
+                instance = FindObjectOfType<T>();
+                if(instance == null)
+                {
+                    instance = new GameObject(typeof(T).Name).AddComponent<T>();
+                }
             }
-
+            
             return instance;
         }
     }
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        if (instance != null)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(this.gameObject);
+        }
     }
 }

@@ -18,7 +18,6 @@ namespace Kwrestling
         [SerializeField] private Sprite koSprite;
 
         public bool GameOver;
-        private string Winner;
 
         private int gaugeCenter = 12;
         public int Gauge
@@ -78,17 +77,17 @@ namespace Kwrestling
             if (Gauge >= 24)
             {
                 GameOver = true;
-                Winner = "Player";
-
+                GameOverUI();
                 GetComponent<SpriteRenderer>().sprite = koSprite;
+                GameManager.Instance.GameClear(GameOver);
+
             }
             else if (Gauge <= 0)
             {
                 GameOver = true;
-                Winner = "Enemy";
+                GameOverUI();
+                GameManager.Instance.GameOver(GameOver);
             }
-
-            if (GameOver) GameOverUI();
         }
     }
 }

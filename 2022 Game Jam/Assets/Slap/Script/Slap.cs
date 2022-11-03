@@ -101,7 +101,7 @@ public class Slap : MonoBehaviour
             dak_ge.Ai_Win();
             win = true;
 
-            // 게임오버
+            GameManager.Instance.GameOver(win);
         }
 
         if (isAttack && win)

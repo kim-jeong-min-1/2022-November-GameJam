@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class RopeManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    public static RopeManager Instance { get; private set; }
     private void Awake() => Instance = this;
 
     public int Player_Click;
@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private Tug_of_War war;
     [SerializeField] private Check Check;
+    [SerializeField] private GameObject ClickEffect;
     Arrow Arrow;
 
     private void Start()
@@ -35,7 +36,8 @@ public class GameManager : MonoBehaviour
     {
         if (ArrowList.Count == 0)
         {
-            war.Win();//°× ½Â¸®
+            war.Win();
+            GameManager.Instance.GameClear(true);
         }
         else
         {
@@ -68,7 +70,10 @@ public class GameManager : MonoBehaviour
                 if (ArrowList[0].GetComponent<Arrow>()?.My_Number == Player_Click)
                 {
                     var temp = ArrowList[0];
+                    var effect = Instantiate(ClickEffect, ArrowList[0].transform.position, Quaternion.identity);
                     ArrowList.RemoveAt(0);
+
+                    Destroy(effect, 0.1f);
                     Destroy(temp);
                 }
                 else
@@ -95,7 +100,10 @@ public class GameManager : MonoBehaviour
                 if (ArrowList[0].GetComponent<Arrow>()?.My_Number == Player_Click)
                 {
                     var temp = ArrowList[0];
+                    var effect = Instantiate(ClickEffect, ArrowList[0].transform.position, Quaternion.identity);
                     ArrowList.RemoveAt(0);
+
+                    Destroy(effect, 0.1f);
                     Destroy(temp);
                 }
                 else
@@ -122,7 +130,10 @@ public class GameManager : MonoBehaviour
                 if (ArrowList[0].GetComponent<Arrow>()?.My_Number == Player_Click)
                 {
                     var temp = ArrowList[0];
+                    var effect = Instantiate(ClickEffect, ArrowList[0].transform.position, Quaternion.identity);
                     ArrowList.RemoveAt(0);
+
+                    Destroy(effect, 0.1f);
                     Destroy(temp);
                 }
                 else
@@ -149,7 +160,10 @@ public class GameManager : MonoBehaviour
                 if (ArrowList[0].GetComponent<Arrow>()?.My_Number == Player_Click)
                 {
                     var temp = ArrowList[0];
+                    var effect = Instantiate(ClickEffect, ArrowList[0].transform.position, Quaternion.identity);
                     ArrowList.RemoveAt(0);
+
+                    Destroy(effect, 0.1f);
                     Destroy(temp);
                 }
                 else
@@ -178,21 +192,23 @@ public class GameManager : MonoBehaviour
 
     void _Timer()
     {
-        fall.color = Color.red;
-        Timer += Time.deltaTime * 0.2f;
 
-        if (timerSlider.value == 1)
-        {
-            stopTimer = true;
-        }
+        if (GameManager.Instance.Timer == 1) war.Lose();
+        //fall.color = Color.red;
+        //Timer += Time.deltaTime * 0.2f;
 
-        if (stopTimer == false)
-        {
-            timerSlider.value = Timer;
-        }
-        else
-        {
-            war.Lose();//°×¿À¹ö
-        }
+        //if (timerSlider.value == 1)
+        //{
+        //    stopTimer = true;
+        //}
+
+        //if (stopTimer == false)
+        //{
+        //    timerSlider.value = Timer;
+        //}
+        //else
+        //{
+        //    war.Lose();
+        //}
     }
 }
