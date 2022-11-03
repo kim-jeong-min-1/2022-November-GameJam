@@ -21,9 +21,9 @@ namespace GangGangSulae
 {
     public class Gang : MonoBehaviour
     {
-        private readonly float ExactBeat = 2f;
-        private readonly float OffBeat = 1.2f;
-        private readonly float FasetBeat = 0.8f;
+        private readonly float ExactBeat = 1f;
+        private readonly float OffBeat = 0.6f;
+        private readonly float FasetBeat = 0.4f;
 
         [SerializeField] private List<SpriteRenderer> aiSprites = new List<SpriteRenderer>();
         [SerializeField] private List<Animator> aiAnimators = new List<Animator>();
@@ -98,19 +98,17 @@ namespace GangGangSulae
 
         private IEnumerator GangGangSulaeLogic()
         {
-            if (!GameOver) StopAllCoroutines();
+            while (!GameOver)
+            {
+                state = GangGangSulaeState.Stop;
+                yield return new WaitForSeconds(RandWaitTime());
 
-            state = GangGangSulaeState.Stop;
-            yield return new WaitForSeconds(RandWaitTime());
+                state = (GangGangSulaeState)Random.Range(1, 3);
+                ChangeSprite(state);
 
-            state = (GangGangSulaeState)Random.Range(1, 3);
-            ChangeSprite(state);
-
-            yield return new WaitForSeconds(0.3f);
-            StartCoroutine(GangGangSulaeLogic());
-            yield return new WaitForSeconds(0.2f);
-            GameOverCheck();
-
+                yield return new WaitForSeconds(0.5f);
+                GameOverCheck();
+            }
         }
     }
 }
