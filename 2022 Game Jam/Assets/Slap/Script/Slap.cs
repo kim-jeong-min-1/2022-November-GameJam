@@ -5,97 +5,102 @@ using UnityEngine.UI;
 
 public class Slap : MonoBehaviour
 {
-    public Slider Slider;
-    public GameObject Handle;
 
-    public float Handle_Speed;
-    public bool isStop = false;
-    public bool isEnd = false;
-    public bool Set_One = true;
-    public bool isAttack = false;
+    [SerializeField] private Player player;
+    [SerializeField] private Ai ai;
+
+    public Slider Slider;
+
+    float Speed; // 핸들 속도
+    public bool isStop = false; // 스페이스바 = 멈춤
+    public bool isEnd = false; // 핸들 방향 바꾸기
+    public bool isAttack = false; // 내 공격 = true
+    bool isWait; // 공격 끝나고 대기
+    bool Ending;
+
+    private void Start()
+    {
+        ai.Attack_Wait();
+    }
 
     private void Update()
     {
-        if(Slider.value == -1)
-            isEnd = false;
-        else if(Slider.value == 1)
-            isEnd = true;
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Ending)
         {
-            isStop = true;
+            //넘어가기
         }
 
-        if (isAttack != true)
-            Handle_Move();
-        else
-            Handle_Move();
-    }
-
-    void Handle_Move()
-    {
-        if (isStop != true)
+        if (!isWait)
         {
-            if (isEnd)
-            Handle_Speed -= Time.deltaTime * 6;
-        else if(isEnd != true)
-            Handle_Speed += Time.deltaTime * 6;
-
-            Slider.value = Handle_Speed;
-        }
-
-        if (isStop)
-            Result();
-    }
-
-    void Result()
-    {
-        if(-0.54f <= Slider.value || Slider.value <= 0.54f)
-        {
-            Good();
-
-            if(-0.15f <= Slider.value || Slider.value <= 0.15f)
+            #region Handle
+            if (!isStop)
             {
-                Perfect();
+                if (Slider.value == -1)
+                    isEnd = false;
+                else if (Slider.value == 1)
+                    isEnd = true;
+
+                if (isEnd)
+                    Speed -= Time.deltaTime * 6;
+                else
+                    Speed += Time.deltaTime * 6;
+
+                Slider.value = Speed;
+            }
+            #endregion
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                isStop = true;
+
+                StartCoroutine(Wait());
             }
         }
-        else
-        {
-            Falled();
-        }
     }
 
-    void Good()
+    IEnumerator Wait()
     {
-        if(isAttack != false)
+        if (isAttack)
         {
-            //좋은 방어 모션
-            isAttack = false;
+            player.Attack();
         }
         else
         {
-            //좋은 공격 모션
-            //승리 함수
+            ai.Attack();
         }
-    }
 
-    void Perfect()
-    {
-        if (isAttack != false)
+        yield return new WaitForSeconds(1);
+
+        //판정
+        if (-0.15f <= Slider.value && Slider.value <= 0.15f && isAttack)
         {
-            //개좋은 방어 모션
-            isAttack = false;
+            player.Win();
+            ai.Lose();
+        }
+        else if (-0.54f <= Slider.value && Slider.value <= 0.54f)
+        {
+            player.Win();
+            ai.Lose();
         }
         else
         {
-            //개좋은 공격 모션
-            //승리 함수
-        }
-    }
+            ai.Win();
+            player.Lose();
 
-    void Falled()
-    {
-        //실패
-        //게임오버 함수
+            // 게임오버
+        }
+        if(isAttack)
+            Ending = true;
+
+        yield return new WaitForSeconds(1);
+
+        isAttack = true;
+        isStop = false;
+        isWait = false;
+
+        Speed = 0;
+
+        ai.Idle();
+        player.Attack_Wait();
     }
 }
