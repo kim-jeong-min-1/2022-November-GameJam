@@ -41,9 +41,10 @@ public class GameManager : Singleton<GameManager>
 
     public void RandomStage()
     {
+        loadStageCoroutine = LoadStage();
         isGameClear = false;
         isGameOver = false;
-        StartCoroutine(LoadStage());
+        StartCoroutine(loadStageCoroutine);
     }
 
     private void StageCoolCheck()
@@ -60,14 +61,13 @@ public class GameManager : Singleton<GameManager>
 
     private IEnumerator LoadStage()
     {
-        print("!");
         var rand = Random.Range(0, 6);
 
         //3번 이내에 플레이한 이력이 있는 스테이지라면 패스
         if(stageRecord.Contains(rand))
         {
-            RandomStage();
             StopCoroutine(loadStageCoroutine);
+            RandomStage();
         }
         stageRecord.Add(rand);
         stageCool.Add(rand, 0);
@@ -132,7 +132,7 @@ public class GameManager : Singleton<GameManager>
     {
         isGameClear = boolean;
 
-        if (isGameOver)
+        if (isGameClear)
         {
             GameScore += 100;
             StageCoolCheck();
