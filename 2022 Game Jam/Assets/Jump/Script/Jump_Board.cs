@@ -7,64 +7,79 @@ public class Jump_Board : MonoBehaviour
 {
     Player Player;
 
-    public bool isOver = false;
-    public bool ClickTime = false; 
-    public bool ClickCheck = false;
-    public bool isClick = true;
-    public bool isSucces = true;
+    public bool isOver; // 판 회전 방향 바꾸기
+    public bool isClick;
+    public bool NoSucces;
+    bool NotClick;
+    bool OneTime = true;
+    bool One = true;
+    bool Start_Game;
+    public float timer;
+
+    private void Start()
+    {
+        StartCoroutine(Wait());
+    }
 
     private void Update()
     {
-        if (ClickTime == true)
+        if (Input.GetKeyDown(KeyCode.Space) && isOver)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            isClick = true;
+
+            if (0.7f <= timer)
             {
-                ClickCheck = true;
-                isClick = true;
-                //Player.Jump();
+                Debug.Log("11");
+            }
+            else
+            {
+                NoSucces = true;
             }
         }
+        else if (Input.GetKeyDown(KeyCode.Space) != true && !isClick && !isOver && 0.2f <= timer && One && Start_Game)
+        {
+            Debug.Log("11111111");
+            NotClick = true;
+            One = false;
+        }
+
+        if (NoSucces && OneTime || NotClick && OneTime)
+        {
+            Debug.Log("GameOver");
+            OneTime = false;
+        }
+
         Move();
+        Timer();
     }
 
     void Move()
     {
-        if(isOver == true) transform.DORotate(new Vector3(0, 0, 15), 2f, RotateMode.LocalAxisAdd);
+        if (isOver == true) transform.DORotate(new Vector3(0, 0, 15), 2f, RotateMode.LocalAxisAdd);
         else transform.DORotate(new Vector3(0, 0, -15), 2f, RotateMode.LocalAxisAdd);
+    }
+
+    void Timer()
+    {
+        timer += Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.name == "Click_Check")
-        {
-            ClickTime = true;
-            ClickCheck = false;
-        }
-        if(collision.name == "Over_Check")
-        {
-            if (isOver == true) isOver = false;
-            else isOver = true;
-        }
+        if (isOver)
+            isOver = false;
+        else
+            isOver = true;
+
+        timer = 0;
+
+        if (isOver)
+            isClick = false;
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    IEnumerator Wait()
     {
-        if (collision.name == "Click_Check")
-        {
-            ClickTime = false;
-            if (ClickCheck == false)
-            {
-                isClick = false;
-            }
-
-            if (isClick) isSucces = true;
-            else isSucces = false;
-
-            if (isSucces != true)
-            {
-                Debug.Log("1111");
-                GameManager.Instance.GameOver(true);
-            }
-        }
+        yield return new WaitForSeconds(1);
+        Start_Game = true;
     }
 }

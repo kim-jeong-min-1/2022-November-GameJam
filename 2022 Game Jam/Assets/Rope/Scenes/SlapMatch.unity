@@ -459,6 +459,7 @@ GameObject:
   m_Component:
   - component: {fileID: 921596071}
   - component: {fileID: 921596070}
+  - component: {fileID: 921596072}
   m_Layer: 0
   m_Name: BackGround
   m_TagString: Untagged
@@ -533,6 +534,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &921596072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 921596069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78efbab66af36914c97201093a2c5415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite:
+  - {fileID: 21300000, guid: b2e586f93a1e1e94ab4219ec6f7ee082, type: 3}
+  - {fileID: 21300000, guid: d9c6e8f99c252b346aef8df7057d6066, type: 3}
 --- !u!1 &983818248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1019,10 +1035,10 @@ MonoBehaviour:
   player: {fileID: 1826192350}
   ai: {fileID: 1202028688}
   dak_ge: {fileID: 983818251}
-  mark: {fileID: 0}
-  backGround: {fileID: 0}
+  mark: {fileID: 1819050293}
+  backGround: {fileID: 921596072}
   Slider: {fileID: 648293944}
-  Effect: {fileID: 0}
+  Effect: {fileID: 414216824}
   isStop: 0
   isEnd: 0
   isAttack: 0
