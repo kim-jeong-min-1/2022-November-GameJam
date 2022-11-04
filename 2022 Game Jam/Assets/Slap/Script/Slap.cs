@@ -35,7 +35,8 @@ public class Slap : MonoBehaviour
     {
         if (Ending)
         {
-            //넘어가기
+            GameManager.Instance.GameClear(true);
+            Ending = false;
         }
 
         if (!isWait)
@@ -57,7 +58,7 @@ public class Slap : MonoBehaviour
             }
             #endregion
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && !GameManager.Instance.isWait)
             {
                 isStop = true;
 
@@ -101,14 +102,16 @@ public class Slap : MonoBehaviour
             dak_ge.Ai_Win();
             win = true;
 
+            yield return new WaitForSeconds(1f);
             GameManager.Instance.GameOver(win);
         }
 
         if (isAttack && win)
+        {
             backGround.Win();
-
-        if(isAttack)
+            yield return new WaitForSeconds(1.2f);
             Ending = true;
+        }
 
         yield return new WaitForSeconds(1);
 

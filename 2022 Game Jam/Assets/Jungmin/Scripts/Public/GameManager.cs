@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public enum ClearConditions
 {
@@ -18,6 +19,8 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private ClearConditions[] clearConditions = new ClearConditions[6];
 
     [SerializeField] private Slider TimerBar;
+    [SerializeField] private GameObject GameOverUI;
+    [SerializeField] private TextMeshProUGUI ScoreText;
 
     [HideInInspector] public int GameScore = 0;
     [HideInInspector] public bool isWait = true;
@@ -25,10 +28,9 @@ public class GameManager : Singleton<GameManager>
     private List<int> stageRecord = new List<int>();
     private Dictionary<int, int> stageCool = new Dictionary<int, int>();
 
-    private bool isGameClear = false;
-    private bool isGameOver = false;
+    [HideInInspector] public bool isGameClear = false;
+    [HideInInspector] public bool isGameOver = false;
     private IEnumerator timerCoroutine;
-    private IEnumerator loadStageCoroutine;
 
     public float Timer
     {
@@ -41,10 +43,9 @@ public class GameManager : Singleton<GameManager>
 
     public void RandomStage()
     {
-        loadStageCoroutine = LoadStage();
         isGameClear = false;
         isGameOver = false;
-        StartCoroutine(loadStageCoroutine);
+        StartCoroutine(LoadStage());
     }
 
     private void StageCoolCheck()
@@ -52,22 +53,22 @@ public class GameManager : Singleton<GameManager>
         foreach (int num in stageRecord)
         {
             stageCool[num]++;
-            if(stageCool[num] == 3)
+            if (stageCool[num] == 3)
             {
                 stageRecord.Remove(num);
+                stageCool.Remove(num);
             }
         }
     }
 
     private IEnumerator LoadStage()
     {
-        var rand = Random.Range(0, 6);
-
-        //3번 이내에 플레이한 이력이 있는 스테이지라면 패스
-        if(stageRecord.Contains(rand))
+        int rand;
+        while (true)
         {
-            StopCoroutine(loadStageCoroutine);
-            RandomStage();
+            rand = Random.Range(0, 6);
+            if (!stageRecord.Contains(rand)) break;
+            yield return null;
         }
         stageRecord.Add(rand);
         stageCool.Add(rand, 0);
@@ -81,9 +82,10 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(0.8f);
 
         EventManager.Instance.StageStart(rand);
-        yield return new WaitForSeconds(3.15f);
+        yield return new WaitForSeconds(3f);
 
-        if(isTimeLimitStage[rand]) StartTimer(rand);
+        if (isTimeLimitStage[rand]) StartTimer(rand);
+
     }
 
     private void StartTimer(int stage)
@@ -91,41 +93,57 @@ public class GameManager : Singleton<GameManager>
         TimerBar.gameObject.SetActive(true);
         TimerBar.value = 0;
 
-        timerCoroutine = TimerLogic(stage);
-        StartCoroutine(timerCoroutine);
+        StartCoroutine(TimerLogic(stage));
     }
 
     private IEnumerator TimerLogic(int stage)
     {
         while (Timer < 1)
         {
-            if(isGameClear || isGameOver)
+            if (isGameClear || isGameOver)
             {
-                TimerBar.gameObject.SetActive(false);
-                StopCoroutine(timerCoroutine);
+                break;
             }
             Timer += Time.deltaTime * 0.2f;
             yield return new WaitForFixedUpdate();
         }
 
-        if (clearConditions[stage] == ClearConditions.TimeLimit)
+        if(!isGameClear && !isGameOver)
         {
-            GameOver(true);
+            if (clearConditions[stage] == ClearConditions.TimeLimit)
+            {
+                GameOver(true);
+            }
+            else if (clearConditions[stage] == ClearConditions.HoldOn)
+            {
+                GameClear(true);
+            }
+            TimerBar.gameObject.SetActive(false);
         }
-        else if(clearConditions[stage] == ClearConditions.HoldOn)
-        {
-            GameClear(true);
-        }
-        TimerBar.gameObject.SetActive(false);
     }
 
     private IEnumerator ScoreSum()
     {
-        while (!Input.anyKey)
+        GameOverUI.SetActive(true);
+        int score = 0;
+        ScoreText.text = $"{score}";
+        while (score != GameScore)
         {
+            score += 100;
+            ScoreText.text = $"{score}";
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        while (true)
+        {
+            if (Input.anyKey)
+            {
+                GameOverUI.SetActive(false);
+                SceneManager.LoadScene("Title");
+                break;
+            }
             yield return null;
         }
-        SceneManager.LoadScene("Title");
     }
 
     public void GameClear(bool boolean)
@@ -134,9 +152,10 @@ public class GameManager : Singleton<GameManager>
 
         if (isGameClear)
         {
+            if (TimerBar.gameObject.activeSelf) TimerBar.gameObject.SetActive(false);
             GameScore += 100;
             StageCoolCheck();
-            Invoke("RandomStage", 1f);
+            RandomStage();
         }
     }
 
@@ -146,6 +165,9 @@ public class GameManager : Singleton<GameManager>
 
         if (isGameOver)
         {
+            if (TimerBar.gameObject.activeSelf) TimerBar.gameObject.SetActive(false);
+            stageCool.Clear();
+            stageRecord.Clear();
             StartCoroutine(ScoreSum());
         }
     }
