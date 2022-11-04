@@ -9,6 +9,7 @@ public class Target : MonoBehaviour
     public bool isHit;
     public IEnumerator HitArrow()
     {
+        SoundManager.Instance.PlaySFX(SoundEffect.Hit);
         var sprite = GetComponent<SpriteRenderer>();
         sprite.sprite = hitSprite;
         yield return new WaitForSeconds(0.5f);

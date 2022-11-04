@@ -15,7 +15,7 @@ namespace Kwrestling
 
         private float RandDelay()
         {
-            return Random.Range(0.1f, 0.15f);
+            return Random.Range(0.15f, 0.2f);
         }
 
         private IEnumerator AISystem()

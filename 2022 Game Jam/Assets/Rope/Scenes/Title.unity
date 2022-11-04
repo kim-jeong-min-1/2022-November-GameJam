@@ -1378,7 +1378,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1473,8 +1473,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BGM: {fileID: 1687684254}
-  Sfxs: []
-  Bgms: []
+  Sfxs:
+  - {fileID: 8300000, guid: 6960583a31d83d749b1f7a7bf409f82c, type: 3}
+  - {fileID: 8300000, guid: c7008a4b8fcd6c549827013925b1a56e, type: 3}
+  - {fileID: 8300000, guid: b852baca51654d847b67378eb5447cf6, type: 3}
+  - {fileID: 8300000, guid: 488b81744efb83246a6e6913dca198d1, type: 3}
+  - {fileID: 8300000, guid: 2142fa99c3af25548a528b0871895abb, type: 3}
+  - {fileID: 8300000, guid: bdfbfc41151c53e45a4f52ba4db093cd, type: 3}
+  Bgms:
+  - {fileID: 8300000, guid: 628912affb294dd4b872e8edd21279f9, type: 3}
 --- !u!4 &1687684256
 Transform:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ namespace Kwrestling
         {
             if (Input.GetKeyDown(KeyCode.Space) && !GameManager.Instance.isWait)
             {
+                SoundManager.Instance.PlaySFX(SoundEffect.Touch);
                 kwrestling.ChangeGaugeValue(1);
             }
         }

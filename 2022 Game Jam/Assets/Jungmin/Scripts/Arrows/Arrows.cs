@@ -39,6 +39,7 @@ public class Arrows : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit2D hit;
+        SoundManager.Instance.PlaySFX(SoundEffect.Bow);
 
         hit = Physics2D.Raycast(ray.origin, Vector2.zero, LayerMask.GetMask("Target"));
 

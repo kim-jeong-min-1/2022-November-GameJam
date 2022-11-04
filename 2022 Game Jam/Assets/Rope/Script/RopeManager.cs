@@ -65,6 +65,7 @@ public class RopeManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
+            SoundManager.Instance.PlaySFX(SoundEffect.Touch);
             Player_Click = 1;
             if (ArrowList.Count > 0)
             {
@@ -95,6 +96,7 @@ public class RopeManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            SoundManager.Instance.PlaySFX(SoundEffect.Touch);
             Player_Click = 2;
             if (ArrowList.Count > 0)
             {
@@ -125,6 +127,7 @@ public class RopeManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
+            SoundManager.Instance.PlaySFX(SoundEffect.Touch);
             Player_Click = 3;
             if (ArrowList.Count > 0)
             {
@@ -155,6 +158,7 @@ public class RopeManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
+            SoundManager.Instance.PlaySFX(SoundEffect.Touch);
             Player_Click = 4;
             if (ArrowList.Count > 0)
             {

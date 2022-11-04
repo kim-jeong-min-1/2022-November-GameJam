@@ -25,6 +25,7 @@ public class Jump_Board : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && isOver)
         {
+            SoundManager.Instance.PlaySFX(SoundEffect.Touch);
             isClick = true;
 
             if (0.7f <= timer)
@@ -38,6 +39,7 @@ public class Jump_Board : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Space) != true && !isClick && !isOver && 0.2f <= timer && One && Start_Game)
         {
+            SoundManager.Instance.PlaySFX(SoundEffect.Touch);
             Debug.Log("11111111");
             NotClick = true;
             One = false;
@@ -46,6 +48,7 @@ public class Jump_Board : MonoBehaviour
         if (NoSucces && OneTime || NotClick && OneTime)
         {
             Debug.Log("GameOver");
+            GameManager.Instance.GameOver(true);
             OneTime = false;
         }
 
@@ -55,6 +58,7 @@ public class Jump_Board : MonoBehaviour
 
     void Move()
     {
+        if (GameManager.Instance.isWait) return;
         if (isOver == true) transform.DORotate(new Vector3(0, 0, 15), 2f, RotateMode.LocalAxisAdd);
         else transform.DORotate(new Vector3(0, 0, -15), 2f, RotateMode.LocalAxisAdd);
     }

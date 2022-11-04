@@ -41,6 +41,11 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    private void Start()
+    {
+        SoundManager.Instance.PlayBGM();
+    }
+
     public void RandomStage()
     {
         isGameClear = false;
@@ -165,6 +170,7 @@ public class GameManager : Singleton<GameManager>
 
         if (isGameOver)
         {
+            SoundManager.Instance.PlaySFX(SoundEffect.GameOver);
             if (TimerBar.gameObject.activeSelf) TimerBar.gameObject.SetActive(false);
             stageCool.Clear();
             stageRecord.Clear();

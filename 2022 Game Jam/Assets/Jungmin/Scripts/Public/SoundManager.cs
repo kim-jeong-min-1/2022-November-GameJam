@@ -4,7 +4,12 @@ using UnityEngine;
 
 public static class SoundEffect
 {
-    public static string effectName = ""; 
+    public static string Bow = "Bow";
+    public static string CountDown = "CountDown";
+    public static string Dakzi = "Dakzi";
+    public static string GameOver = "GameOver";
+    public static string Hit = "Hit";
+    public static string Touch = "Touch";
 }
 
 public class SoundManager : Singleton<SoundManager>
@@ -36,11 +41,10 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlayBGM(float volum = 1f)
     {
-        //BGM.volume = volum;
-        //if (SceneManager.GetActiveScene().name == "Title")
-        //{
-        //    BGM.clip = Bgms[0];
-        //    BGM.Play();
-        //}
+        BGM.volume = volum;
+
+        BGM.clip = Bgms[0];
+        BGM.Play();
+
     }
 }

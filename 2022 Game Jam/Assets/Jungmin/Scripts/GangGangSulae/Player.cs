@@ -32,6 +32,7 @@ namespace GangGangSulae
 
         private IEnumerator Dance(bool flip)
         {
+            SoundManager.Instance.PlaySFX(SoundEffect.Touch);
             spriteRenderer.flipX = flip;
             animator.SetTrigger("isMove");
 

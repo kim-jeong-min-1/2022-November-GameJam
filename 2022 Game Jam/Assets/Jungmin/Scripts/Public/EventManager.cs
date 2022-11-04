@@ -32,6 +32,7 @@ public class EventManager : Singleton<EventManager>
     {
         Explain.text = stageExplain[stage];
         StartMenu.SetActive(true);
+        SoundManager.Instance.PlaySFX(SoundEffect.CountDown);
 
         for (int i = 2; i >= 0; i--)
         {

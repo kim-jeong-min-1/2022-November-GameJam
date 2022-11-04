@@ -61,7 +61,7 @@ public class Slap : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) && !GameManager.Instance.isWait)
             {
                 isStop = true;
-
+                SoundManager.Instance.PlaySFX(SoundEffect.Dakzi);
                 StartCoroutine(Wait());
             }
         }
