@@ -97,10 +97,11 @@ namespace GangGangSulae
             }
         }
 
+
         private IEnumerator GangGangSulaeLogic()
         {
             yield return new WaitUntil(() => !GameManager.Instance.isWait);
-            while (!GameOver)
+            while (!GameOver && !GameManager.Instance.isGameClear)
             {
                 state = GangGangSulaeState.Stop;
                 yield return new WaitForSeconds(RandWaitTime());
@@ -109,7 +110,8 @@ namespace GangGangSulae
                 ChangeSprite(state);
 
                 yield return new WaitForSeconds(0.5f);
-                GameOverCheck();
+
+                if (!GameManager.Instance.isGameClear) GameOverCheck();
             }
         }
     }

@@ -6,6 +6,7 @@ using DG.Tweening;
 public class Target : MonoBehaviour
 {
     [SerializeField] private Sprite hitSprite;
+    public bool isHit;
     public IEnumerator HitArrow()
     {
         var sprite = GetComponent<SpriteRenderer>();

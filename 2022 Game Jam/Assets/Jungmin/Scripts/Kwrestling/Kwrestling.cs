@@ -80,6 +80,7 @@ namespace Kwrestling
                 GameOverUI();
                 GetComponent<SpriteRenderer>().sprite = koSprite;
                 GameManager.Instance.GameClear(GameOver);
+                Gauge = 12;
 
             }
             else if (Gauge <= 0)
@@ -87,6 +88,7 @@ namespace Kwrestling
                 GameOver = true;
                 GameOverUI();
                 GameManager.Instance.GameOver(GameOver);
+                Gauge = 12;
             }
         }
     }

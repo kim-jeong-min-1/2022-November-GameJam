@@ -38,6 +38,7 @@ public class RopeManager : MonoBehaviour
         {
             war.Win();
             GameManager.Instance.GameClear(true);
+            ArrowList.Add(new GameObject("!!"));
         }
         else
         {

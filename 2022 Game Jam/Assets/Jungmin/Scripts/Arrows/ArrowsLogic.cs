@@ -24,6 +24,7 @@ public class ArrowsLogic : MonoBehaviour
         {
             GameClear = true;
             GameManager.Instance.GameClear(GameClear);
+            hitTarget = 0;
         }
     }
 

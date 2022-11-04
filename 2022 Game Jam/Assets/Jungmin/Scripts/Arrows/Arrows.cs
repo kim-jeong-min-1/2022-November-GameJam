@@ -17,7 +17,7 @@ public class Arrows : MonoBehaviour
         if (GameManager.Instance.isWait) return;
         ArrowToMousePoint();
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !GameManager.Instance.isGameOver)
         {
             ShootAnArrow();
         }
@@ -50,7 +50,8 @@ public class Arrows : MonoBehaviour
             var obj = Instantiate(hitEffect, hit.transform.position, Quaternion.identity);
             Destroy(obj, 0.2f);
 
-            arrowsLogic.hitTarget++;
+            if(!target.isHit)arrowsLogic.hitTarget++;
+            target.isHit = true;
             StartCoroutine(target.HitArrow());
 
             if (arrowsLogic.hitTarget != 4) StartCoroutine(ReLoadArrow(NormalArrow));
