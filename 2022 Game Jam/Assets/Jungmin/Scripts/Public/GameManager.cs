@@ -46,10 +46,13 @@ public class GameManager : Singleton<GameManager>
         SoundManager.Instance.PlayBGM();
     }
 
+    private void Update()
+    {
+        if (isGameClear || isGameOver) StopCoroutine(timerCoroutine);
+    }
+
     public void RandomStage()
     {
-        isGameClear = false;
-        isGameOver = false;
         StartCoroutine(LoadStage());
     }
 
@@ -78,6 +81,8 @@ public class GameManager : Singleton<GameManager>
         stageRecord.Add(rand);
         stageCool.Add(rand, 0);
         isWait = true;
+        isGameClear = false;
+        isGameOver = false;
 
         EventManager.Instance.FadeIn();
         yield return new WaitForSeconds(1.5f);
@@ -98,14 +103,15 @@ public class GameManager : Singleton<GameManager>
         TimerBar.gameObject.SetActive(true);
         TimerBar.value = 0;
 
-        StartCoroutine(TimerLogic(stage));
+        timerCoroutine = TimerLogic(stage);
+        StartCoroutine(timerCoroutine);
     }
 
     private IEnumerator TimerLogic(int stage)
     {
-        while (Timer < 1)
+        while (!isGameClear && !isGameOver)
         {
-            if (isGameClear || isGameOver)
+            if (Timer >= 1)
             {
                 break;
             }
@@ -115,7 +121,7 @@ public class GameManager : Singleton<GameManager>
 
         if(!isGameClear && !isGameOver)
         {
-            if (clearConditions[stage] == ClearConditions.TimeLimit)
+            if (clearConditions[stage] == ClearConditions.TimeLimit && !isGameClear)
             {
                 GameOver(true);
             }
@@ -172,6 +178,7 @@ public class GameManager : Singleton<GameManager>
         {
             SoundManager.Instance.PlaySFX(SoundEffect.GameOver);
             if (TimerBar.gameObject.activeSelf) TimerBar.gameObject.SetActive(false);
+            GameScore = 0;
             stageCool.Clear();
             stageRecord.Clear();
             StartCoroutine(ScoreSum());

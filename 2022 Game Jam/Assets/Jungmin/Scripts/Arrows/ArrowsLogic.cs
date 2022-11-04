@@ -22,6 +22,7 @@ public class ArrowsLogic : MonoBehaviour
     {
         if(hitTarget == 5)
         {
+            print("!");
             GameClear = true;
             GameManager.Instance.GameClear(GameClear);
             hitTarget = 0;

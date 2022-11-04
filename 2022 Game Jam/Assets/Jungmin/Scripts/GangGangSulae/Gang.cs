@@ -110,8 +110,7 @@ namespace GangGangSulae
                 ChangeSprite(state);
 
                 yield return new WaitForSeconds(0.5f);
-
-                if (!GameManager.Instance.isGameClear) GameOverCheck();
+                if(!GameManager.Instance.isGameClear) GameOverCheck();
             }
         }
     }

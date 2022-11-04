@@ -178,8 +178,6 @@ public class RopeManager : MonoBehaviour
                         var temp = ArrowList[0];
                         ArrowList.RemoveAt(0);
                         Destroy(temp);
-                    }
-                    
                     if(isClick)
                         StartCoroutine("Miss");
 
@@ -192,13 +190,15 @@ public class RopeManager : MonoBehaviour
     {
         isClick = false;
         yield return new WaitForSeconds(1.0f);
+                    }
+                    
         isClick = true;
     }
 
     void _Timer()
     {
 
-        if (GameManager.Instance.Timer == 1) war.Lose();
+        if (GameManager.Instance.Timer >= 1) war.Lose();
         //fall.color = Color.red;
         //Timer += Time.deltaTime * 0.2f;
 
